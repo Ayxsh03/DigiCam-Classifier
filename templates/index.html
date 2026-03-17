@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="DigiCam — Handwritten digit classification and latent space interpolation using deep learning." />
+    <title>DigiCam — Classify & Morph Digits</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <!-- ─── Hero Section ──────────────────────────────────────────────── -->
+    <header class="hero">
+        <div class="hero-glow"></div>
+        <h1>Digi<span class="accent">Cam</span></h1>
+        <p class="subtitle">Handwritten Digit Classification & Latent Space Interpolation</p>
+    </header>
+
+    <!-- ─── Tab Navigation ────────────────────────────────────────────── -->
+    <nav class="tabs" id="tabs">
+        <button class="tab active" data-target="classify-section" id="tab-classify">
+            <span class="tab-icon">🔍</span> Classify
+        </button>
+        <button class="tab" data-target="interpolate-section" id="tab-interpolate">
+            <span class="tab-icon">🌀</span> Interpolate
+        </button>
+    </nav>
+
+    <main class="container">
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- CLASSIFY SECTION                                              -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section id="classify-section" class="section active">
+            <div class="card glass">
+                <h2>Draw a Digit</h2>
+                <p class="card-desc">Draw a single digit (0–9) on the canvas and let the CNN classify it.</p>
+
+                <div class="canvas-wrapper">
+                    <canvas id="draw-canvas" width="280" height="280"></canvas>
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="btn-classify">Classify</button>
+                    <button class="btn btn-ghost" id="btn-clear">Clear</button>
+                </div>
+
+                <!-- Upload alternative -->
+                <div class="upload-alt">
+                    <span>or</span>
+                    <label class="btn btn-outline btn-sm" for="upload-input">Upload Image</label>
+                    <input type="file" id="upload-input" accept="image/*" hidden />
+                </div>
+            </div>
+
+            <!-- Result Card -->
+            <div class="card glass result-card" id="classify-result" style="display:none;">
+                <h3>Prediction</h3>
+                <div class="prediction-display">
+                    <span class="predicted-digit" id="predicted-digit">—</span>
+                    <span class="confidence-label" id="confidence-label">0%</span>
+                </div>
+                <div class="prob-bars" id="prob-bars"></div>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- INTERPOLATE SECTION                                           -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <section id="interpolate-section" class="section">
+            <div class="card glass">
+                <h2>Latent Space Interpolation</h2>
+                <p class="card-desc">Pick two digits and watch the VAE smoothly morph between them through a 10-dimensional latent space.</p>
+
+                <div class="digit-pickers">
+                    <div class="picker-group">
+                        <label>Start Digit</label>
+                        <div class="digit-grid" id="picker-a">
+                            <button class="digit-btn selected" data-digit="3">3</button>
+                            <button class="digit-btn" data-digit="0">0</button>
+                            <button class="digit-btn" data-digit="1">1</button>
+                            <button class="digit-btn" data-digit="2">2</button>
+                            <button class="digit-btn" data-digit="4">4</button>
+                            <button class="digit-btn" data-digit="5">5</button>
+                            <button class="digit-btn" data-digit="6">6</button>
+                            <button class="digit-btn" data-digit="7">7</button>
+                            <button class="digit-btn" data-digit="8">8</button>
+                            <button class="digit-btn" data-digit="9">9</button>
+                        </div>
+                    </div>
+
+                    <div class="arrow-divider">→</div>
+
+                    <div class="picker-group">
+                        <label>End Digit</label>
+                        <div class="digit-grid" id="picker-b">
+                            <button class="digit-btn selected" data-digit="8">8</button>
+                            <button class="digit-btn" data-digit="0">0</button>
+                            <button class="digit-btn" data-digit="1">1</button>
+                            <button class="digit-btn" data-digit="2">2</button>
+                            <button class="digit-btn" data-digit="3">3</button>
+                            <button class="digit-btn" data-digit="4">4</button>
+                            <button class="digit-btn" data-digit="5">5</button>
+                            <button class="digit-btn" data-digit="6">6</button>
+                            <button class="digit-btn" data-digit="7">7</button>
+                            <button class="digit-btn" data-digit="9">9</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <label for="steps-slider">Interpolation Steps: <strong id="steps-val">20</strong></label>
+                    <input type="range" id="steps-slider" min="5" max="40" value="20" />
+                </div>
+
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="btn-interpolate">Generate Morph</button>
+                </div>
+            </div>
+
+            <!-- Result Card -->
+            <div class="card glass result-card" id="interpolate-result" style="display:none;">
+                <h3>Morphing Result</h3>
+                <div class="gif-display">
+                    <img id="morph-gif" src="" alt="Morphing animation" />
+                </div>
+                <a class="btn btn-outline btn-sm" id="download-gif" download="morph.gif" href="#">Download GIF</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- ─── Footer ────────────────────────────────────────────────────── -->
+    <footer>
+        <p>Built with <span class="accent">♥</span> using Keras + PyTorch + Flask</p>
+    </footer>
+
+    <div class="loading-overlay" id="loading" style="display:none;">
+        <div class="spinner"></div>
+        <p>Processing…</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

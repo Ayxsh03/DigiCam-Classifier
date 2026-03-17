@@ -1,0 +1,16 @@
+# Core
+flask>=3.0
+gunicorn>=21.2
+
+# Classification (Keras CNN)
+tensorflow>=2.10
+numpy
+Pillow
+
+# Interpolation (PyTorch VAE)
+torch>=2.0
+torchvision>=0.15
+imageio
+
+# Image processing
+opencv-python-headless

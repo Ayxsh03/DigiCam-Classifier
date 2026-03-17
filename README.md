@@ -74,12 +74,6 @@ DigiCam-Classifier/
 
 ---
 
-## ☁️ Deployment
-
-### Render (Recommended)
-1. Push to GitHub
-2. Connect repo on [render.com](https://render.com)
-3. It auto-detects `render.yaml` — deploy with one click
 
 ### Manual
 ```bash
@@ -93,8 +87,7 @@ gunicorn app:app --bind 0.0.0.0:8000 --timeout 120
 
 **Backend:** Python · Flask · Gunicorn
 **ML:** TensorFlow/Keras · PyTorch
-**Frontend:** HTML5 Canvas · Vanilla CSS · Vanilla JS
-**Deploy:** Render
+**Frontend:** HTML5 Canvas · CSS · JS
 
 ---
 

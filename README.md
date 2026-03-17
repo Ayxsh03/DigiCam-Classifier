@@ -5,7 +5,7 @@
 </p>
 <p align="center"><em>Smooth morphing between digits via Latent Space Interpolation</em></p>
 
-A deployable web application featuring two deep learning modules for handwritten digits:
+A web application featuring two deep learning modules for handwritten digits:
 
 | Module | Model | What It Does |
 |---|---|---|
